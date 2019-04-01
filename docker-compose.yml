@@ -1,0 +1,14 @@
+version: "3"
+services:
+    precoapi:
+        image: "precoapi:1.0.0"
+        ports:
+            - "8005:80"
+        environment:
+            - "ConnectionURL=mongodb://192.168.0.11:27017"
+    produtoapi:
+        image: "produtoapi:1.0.0"
+        ports:
+            - "8006:80"
+        environment:
+            - "ConnectionURL=mongodb://192.168.0.11:27017"
