@@ -1,47 +1,33 @@
-import { ApolloServer, gql } from 'apollo-server';
-import { ProdutoGraphQLAPI } from './ProdutoDataSource';
-import { PrecosGraphQLAPI } from './PrecosDataSource';
-import { PrecoGraphQLAPI } from './PrecoDataSource';
+import express from 'express';
+import { ApolloServer, gql } from 'apollo-server-express';
+import schemas from './schemas';
+import commons from './lib/commons';
+import {
+  makeExecutableSchema,
+  addMockFunctionsToSchema,
+  mergeSchemas,
+} from 'graphql-tools';
 
+(async () => {
+  const port = commons.conf.get('PORT');
 
-const typeDefs = gql`
-  type Produto {
-    codigo: Int!
-    nome: String!
-    codigoBarras: String!
-    precos: [Preco]
-  }
-  type Preco {
-    codigoProduto: Int!
-    valor: Float!
-    data: String!
-  }
-  type Query {
-    produtos: [Produto],
-    preco(codigoProduto: Int): Preco,
-    precos: [Preco],
-  }
-`;
+  var schemaPreco = await schemas.precoSchema();
+  var schemaProduto = await schemas.produtoSchema();
 
-const resolvers = {
-  Query: {
-    produtos: (root, args, { dataSources }) => dataSources.produtoGraphQLAPI.getAllProdutos(),
-    precos: (root, args, { dataSources }) => dataSources.precosGraphQLAPI.getAllPrecos(),
-    preco: (root, args, { dataSources }) => dataSources.precoGraphQLAPI.getAllPrecoPorCodigoProduto(args.codigoProduto),
-  
-  },
-};
+  const server = new ApolloServer({
+    schema: mergeSchemas({
+      schemas: [
+        schemaPreco,
+        schemaProduto,
+      ],
+    })
+  });
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  dataSources: () => ({
-    produtoGraphQLAPI: new ProdutoGraphQLAPI(),
-    precosGraphQLAPI: new PrecosGraphQLAPI(),
-    precoGraphQLAPI: new PrecoGraphQLAPI(),
-  }),
-});
+  const app = express();
+  server.applyMiddleware({ app });
 
-server.listen().then(({ url }) => {
-  console.log(`🚀 Server ready at ${url}`);
-});
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
+})();
+

@@ -11,13 +11,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo-datasource-graphql": "^1.2.2",
-    "apollo-datasource-rest": "^0.3.2",
-    "apollo-server": "^2.4.2",
+    "apollo-link-context": "^1.0.17",
+    "apollo-link-http": "^1.5.14",
     "apollo-server-express": "^2.4.8",
-    "graphql": "^14.1.1"
+    "conf": "^4.0.0",
+    "express": "^4.16.4",
+    "express-jwt": "^5.3.1",
+    "graphql": "^14.2.1",
+    "graphql-tools": "^4.0.4",
+    "nconf": "^0.10.0",
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
-    "esm": "^3.0.79"
+    "esm": "^3.2.22"
   }
 }

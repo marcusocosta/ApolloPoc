@@ -5,10 +5,10 @@ services:
         ports:
             - "8005:80"
         environment:
-            - "ConnectionURL=mongodb://192.168.0.11:27017"
+            - "ConnectionURL=mongodb://172.17.0.1:27017"
     produtoapi:
         image: "produtoapi:1.0.0"
         ports:
             - "8006:80"
         environment:
-            - "ConnectionURL=mongodb://192.168.0.11:27017"
+            - "ConnectionURL=mongodb://172.17.0.1:27017"
