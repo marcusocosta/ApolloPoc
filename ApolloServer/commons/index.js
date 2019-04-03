@@ -1,3 +1,3 @@
-import conf from './config';
+const conf = require('./config');
 
-export default { conf };
+module.exports = { conf };

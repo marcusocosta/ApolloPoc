@@ -1,11 +1,12 @@
-import { makeRemoteExecutableSchema, introspectSchema } from 'graphql-tools';
-import { HttpLink } from 'apollo-link-http';
-import fetch from 'node-fetch';
-import commons from '../commons';
+const { makeRemoteExecutableSchema, introspectSchema } = require('graphql-tools');
+const { HttpLink } = require('apollo-link-http');
+const fetch = require('node-fetch');
+const commons = require('../commons');
 
-const links = commons.conf.get("LINKS").map(link => new HttpLink({ uri: link, fetch }));
+const links = commons.conf.get("LINKS")
+    .map(link => new HttpLink({ uri: `${link}${commons.conf.get("PATH_GRAPHQL")}`, fetch }));
 
-export default async () => {
+module.exports = async () => {
     return await Promise.all(links.map(link => createExecutableSchema(link)));
 }
 

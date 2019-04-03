@@ -1,8 +1,8 @@
-import express from 'express';
-import { ApolloServer, gql } from 'apollo-server-express';
-import schemas from './schemas/introspect.schemas';
-import commons from './commons';
-import { mergeSchemas } from 'graphql-tools';
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
+const schemas = require('./schemas/introspect.schemas');
+const commons = require('./commons');
+const { mergeSchemas } = require('graphql-tools');
 
 (async () => {
   const port = commons.conf.get('PORT');
