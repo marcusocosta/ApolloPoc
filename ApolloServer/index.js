@@ -1,7 +1,7 @@
 import express from 'express';
 import { ApolloServer, gql } from 'apollo-server-express';
 import schemas from './schemas/introspect.schemas';
-import commons from './lib/commons';
+import commons from './commons';
 import { mergeSchemas } from 'graphql-tools';
 
 (async () => {
