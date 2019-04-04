@@ -13,7 +13,7 @@ services:
         environment:
             - "ConnectionURL=mongodb://172.17.0.1:27017"
     apoloserver:
-        image: "docker-unj-repo.softplan.com.br/unj/apoloserver:1.0.0"
+        image: "docker-unj-repo.softplan.com.br/unj/apoloserver:1.0.1"
         ports:
             - "8004:5000"
         depends_on:
@@ -23,3 +23,4 @@ services:
             - "PRECO_INTROSPECT_URL=http://172.17.0.1:8005"
             - "PRODUTO_INTROSPECT_URL=http://172.17.0.1:8006"
             - "PATH_GRAPHQL=/graphql"
+            - "ROOT_PATH=/apollo"

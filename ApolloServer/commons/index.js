@@ -1,3 +1,4 @@
 const conf = require('./config');
+const logger = require('./logger');
 
-module.exports = { conf };
+module.exports = { conf, logger };
