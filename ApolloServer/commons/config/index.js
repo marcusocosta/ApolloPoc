@@ -14,12 +14,12 @@ conf.argv()
   })
   .defaults(
     {
-      PORT : 5000,
+      PORT : 5005,
       PRECO_INTROSPECT_URL:'http://localhost:8005',
       PRODUTO_INTROSPECT_URL:'http://localhost:8006',
       LINKS,
       PATH_GRAPHQL: '/graphql',
-      ROOT_PATH: '/apollo'     
+      ROOT_PATH: '/apollo'
     }
   );
 
