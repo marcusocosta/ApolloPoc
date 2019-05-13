@@ -3,7 +3,11 @@ const { HttpLink } = require('apollo-link-http');
 const fetch = require('node-fetch');
 const commons = require('../commons');
 
-const links = commons.conf.get('LINKS')
+const getUrls = () => Object.keys(commons.conf.get())
+  .filter(name => new RegExp('_INTROSPECT_URL').test(name))
+  .map(name => commons.conf.get(name));
+
+const urls = getUrls()
   .map(link => new HttpLink({ uri: `${link}${commons.conf.get('PATH_GRAPHQL')}`, fetch }));
 
 const createExecutableSchema = async (link) => {
@@ -15,4 +19,4 @@ const createExecutableSchema = async (link) => {
   });
 };
 
-module.exports = async () => Promise.all(links.map(link => createExecutableSchema(link)));
+module.exports = async () => Promise.all(urls.map(link => createExecutableSchema(link)));
