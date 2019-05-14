@@ -3,12 +3,20 @@ const { HttpLink } = require('apollo-link-http');
 const fetch = require('node-fetch');
 const commons = require('../commons');
 
-const getUrls = () => Object.keys(commons.conf.get())
-  .filter(name => new RegExp('_INTROSPECT_URL').test(name))
-  .map(name => commons.conf.get(name));
+const getEnvironmentVariableWithPattern = name => new RegExp(commons.conf.get('INTROSPECT_URL_PATH')).test(name);
 
-const urls = getUrls()
-  .map(link => new HttpLink({ uri: `${link}${commons.conf.get('PATH_GRAPHQL')}`, fetch }));
+const getEnvironmentVariableValue = (name) => {
+  const url = commons.conf.get(name);
+  commons.logger.info(`Introspect url load: ${url}`);
+  return url;
+};
+
+const getApolloHttpLink = url => new HttpLink({ uri: `${url}${commons.conf.get('PATH_GRAPHQL')}`, fetch });
+
+const getIntrospectUrls = () => Object.keys(commons.conf.get())
+  .filter(getEnvironmentVariableWithPattern)
+  .map(getEnvironmentVariableValue)
+  .map(getApolloHttpLink);
 
 const createExecutableSchema = async (link) => {
   const schema = await introspectSchema(link);
@@ -19,4 +27,5 @@ const createExecutableSchema = async (link) => {
   });
 };
 
-module.exports = async () => Promise.all(urls.map(link => createExecutableSchema(link)));
+module.exports = async () => Promise
+  .all(getIntrospectUrls().map(link => createExecutableSchema(link)));

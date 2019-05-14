@@ -1,0 +1,4 @@
+{
+    "PRECO_INTROSPECT_URL": "http://localhost:8005",
+    "PRODUTO_INTROSPECT_URL": "http://localhost:8006"
+}
